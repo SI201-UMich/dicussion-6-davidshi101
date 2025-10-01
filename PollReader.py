@@ -59,6 +59,8 @@ class PollReader():
 
             # split up the row by column
             seperated = i.split(',')
+            if len(seperated) < 6:
+                continue
 
             # map each part of the row to the correct column
             self.data_dict['month'].append(seperated[0])
@@ -80,6 +82,8 @@ class PollReader():
             str: A string indicating the candidate with the highest polling percentage or EVEN,
              and the highest polling percentage.
         """
+        if not self.data_dict['Harris result'] or not self.data_dict['Trump result']:
+            return "No data available"
         maxHarris = max(self.data_dict['Harris result'])
         maxTrump = max(self.data_dict['Trump result'])
         if maxHarris > maxTrump:
@@ -100,11 +104,12 @@ class PollReader():
             tuple: A tuple containing the average polling percentages for Harris and Trump
                    among likely voters, in that order.
         """
+        
         HarrisPer = (self.data_dict['Harris result'])
         TrumpPer = (self.data_dict['Trump result'])
         mytuple = ()
-        averageHarris = HarrisPer/len(HarrisPer)
-        averageTrump = TrumpPer/len(TrumpPer)
+        averageHarris = sum(HarrisPer)/len(HarrisPer)
+        averageTrump = sum(TrumpPer)/len(TrumpPer)
         mytuple = (averageHarris, averageTrump)
         return mytuple
             
@@ -122,6 +127,17 @@ class PollReader():
             tuple: A tuple containing the net change for Harris and Trump, in that order.
                    Positive values indicate an increase, negative values indicate a decrease.
         """
+        HarrisPer = (self.data_dict['Harris result'])
+        TrumpPer = (self.data_dict['Trump result'])
+        mytuple = ()
+        earliestHarris = sum(HarrisPer[:30])/30
+        latestHarris = sum(HarrisPer[-30:])/30
+        earliestTrump = sum(TrumpPer[:30])/30
+        latestTrump = sum(TrumpPer[-30:])/30
+        changeHarris = latestHarris - earliestHarris
+        changeTrump = latestTrump - earliestTrump
+        mytuple = (changeHarris, changeTrump)
+        return mytuple
         pass
 
 
