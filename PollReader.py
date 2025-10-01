@@ -87,7 +87,7 @@ class PollReader():
         elif maxTrump > maxHarris:
             return f"Trump {maxTrump}%"
         else:
-            return f"EVEN {maxHarris}% {maxTrump}%"
+            return f"EVEN {maxHarris}%"
 
         pass
 
@@ -100,6 +100,14 @@ class PollReader():
             tuple: A tuple containing the average polling percentages for Harris and Trump
                    among likely voters, in that order.
         """
+        HarrisPer = (self.data_dict['Harris result'])
+        TrumpPer = (self.data_dict['Trump result'])
+        mytuple = ()
+        averageHarris = HarrisPer/len(HarrisPer)
+        averageTrump = TrumpPer/len(TrumpPer)
+        mytuple = (averageHarris, averageTrump)
+        return mytuple
+            
         pass
 
 
