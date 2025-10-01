@@ -80,6 +80,15 @@ class PollReader():
             str: A string indicating the candidate with the highest polling percentage or EVEN,
              and the highest polling percentage.
         """
+        maxHarris = max(self.data_dict['Harris result'])
+        maxTrump = max(self.data_dict['Trump result'])
+        if maxHarris > maxTrump:
+            return f"Harris {maxHarris}%"
+        elif maxTrump > maxHarris:
+            return f"Trump {maxTrump}%"
+        else:
+            return f"EVEN {maxHarris}% {maxTrump}%"
+
         pass
 
 
