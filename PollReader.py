@@ -58,7 +58,7 @@ class PollReader():
         for i in self.raw_data[1:]:
 
             # split up the row by column
-            seperated = i.split(',')
+            seperated = i.strip().split(',')
             if len(seperated) < 6:
                 continue
 
@@ -69,6 +69,7 @@ class PollReader():
             self.data_dict['sample type'].append(seperated[3])
             self.data_dict['Harris result'].append(float(seperated[4]))
             self.data_dict['Trump result'].append(float(seperated[5]))
+        
 
 
     def highest_polling_candidate(self):
@@ -82,8 +83,6 @@ class PollReader():
             str: A string indicating the candidate with the highest polling percentage or EVEN,
              and the highest polling percentage.
         """
-        if not self.data_dict['Harris result'] or not self.data_dict['Trump result']:
-            return "No data available"
         maxHarris = max(self.data_dict['Harris result'])
         maxTrump = max(self.data_dict['Trump result'])
         if maxHarris > maxTrump:
@@ -93,7 +92,7 @@ class PollReader():
         else:
             return f"EVEN {maxHarris}%"
 
-        pass
+    
 
 
     def likely_voter_polling_average(self):
@@ -108,12 +107,13 @@ class PollReader():
         HarrisPer = (self.data_dict['Harris result'])
         TrumpPer = (self.data_dict['Trump result'])
         mytuple = ()
+        if not HarrisPer or not TrumpPer:
+            return (0,0)   
         averageHarris = sum(HarrisPer)/len(HarrisPer)
         averageTrump = sum(TrumpPer)/len(TrumpPer)
         mytuple = (averageHarris, averageTrump)
         return mytuple
             
-        pass
 
 
     def polling_history_change(self):
@@ -138,7 +138,6 @@ class PollReader():
         changeTrump = latestTrump - earliestTrump
         mytuple = (changeHarris, changeTrump)
         return mytuple
-        pass
 
 
 class TestPollReader(unittest.TestCase):
